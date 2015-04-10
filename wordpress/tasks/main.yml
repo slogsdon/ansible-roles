@@ -1,0 +1,36 @@
+---
+- name: create database
+  mysql_db: name={{ wp_db_name }} state=present
+
+- name: create database user
+  mysql_user: name={{ wp_db_user }} password={{ wp_db_pass }} priv=*.*:ALL state=present
+
+- name: download wp-cli
+  get_url: url=https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar dest=/usr/local/bin/wp
+
+- name: make wp-cli executable
+  file: path=/usr/local/bin/wp owner=vagrant mode="u+x"
+
+- name: test if destination exists
+  shell: test -d /vagrant/wordpress && echo "exist" || echo ""
+  register: is_folder_created
+
+- name: download latest if not present
+  command: wp core download --path=/vagrant/wordpress --allow-root
+  when: is_folder_created.stdout != "exist"
+
+- name: test if config exists
+  shell: test -f /vagrant/wordpress/wp-config.php && echo "exist" || echo ""
+  register: is_config_created
+
+- name: configure
+  command: wp core config --path=/vagrant/wordpress --allow-root --dbname={{ wp_db_name }} --dbuser={{ wp_db_user }} --dbpass={{ wp_db_pass }}
+  when: is_config_created.stdout != "exist"
+
+- name: test if installed
+  shell: wp core is-installed --path=/vagrant/wordpress --allow-root
+  register: is_installed
+
+- name: install
+  command: wp core install --path=/vagrant/wordpress --allow-root --admin_user={{ wp_admin_user }} --admin_password={{ wp_admin_pass }} --admin_email={{ wp_admin_email }} --url="http://localhost/" --title="{{ wp_title }}"
+  when: is_installed.rc != 0

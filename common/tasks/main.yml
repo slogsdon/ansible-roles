@@ -1,0 +1,6 @@
+---
+- name: git
+  apt: name=git state=present
+
+- name: vim
+  apt: name=vim state=present

@@ -1,0 +1,6 @@
+---
+- name: install
+  apt: name=php5 state=present
+
+- name: mysql extension
+  apt: name=php5-mysql state=present
