@@ -1,6 +1,8 @@
 ---
 - name: git
   apt: name=git state=present
+  sudo: true
 
 - name: vim
   apt: name=vim state=present
+  sudo: true

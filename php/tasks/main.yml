@@ -1,6 +1,31 @@
 ---
 - name: install
-  apt: name=php5 state=present
+  apt: name={{ item }} state=present
+  sudo: true
+  with_items:
+    - php5-cli
+    - php5-common
+    - php5-dev
 
-- name: mysql extension
-  apt: name=php5-mysql state=present
+- name: install extensions
+  apt: name={{ item }} state=present
+  sudo: true
+  with_items:
+    - php5-curl
+    - php5-gd
+    - php5-imap
+    - php5-intl
+    - php5-mcrypt
+    - php5-ming
+    - php5-mysql
+    - php-pear
+    - php5-ps
+    - php5-pspell
+    - php5-recode
+    - php5-snmp
+    - php-soap
+    - php5-sqlite
+    - php5-tidy
+    - php5-xdebug
+    - php5-xmlrpc
+    - php5-xsl

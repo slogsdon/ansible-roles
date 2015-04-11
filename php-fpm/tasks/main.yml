@@ -1,0 +1,21 @@
+---
+- name: install
+  apt: name=php5-fpm state=present
+  sudo: true
+
+- name: start
+  service: name=php5-fpm state=started enabled=yes
+  sudo: true
+
+- name: disable default pool
+  command: mv /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.disabled creates=/etc/php5/fpm/pool.d/www.disabled
+  notify: restart php-fpm
+  sudo: true
+
+- name: test if socket directory exists
+  shell: test -d /var/run/php5-fpm && echo "exist" || echo ""
+  register: is_folder_created
+
+- name: ensure socket directory exists
+  file: path=/var/run/php5-fpm state=directory
+  sudo: true

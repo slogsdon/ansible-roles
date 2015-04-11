@@ -1,9 +1,12 @@
 ---
 - name: install
   apt: name=mysql-server state=present
+  sudo: true
 
 - name: python mysqldb
   apt: name=python-mysqldb state=present
+  sudo: true
 
 - name: start
   service: name=mysql state=started enabled=yes
+  sudo: true
