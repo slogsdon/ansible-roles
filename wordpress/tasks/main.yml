@@ -50,5 +50,5 @@
   register: is_installed
 
 - name: install
-  command: wp core install --path={{ server_root }} --admin_user={{ wp_admin_user }} --admin_password={{ wp_admin_pass }} --admin_email={{ wp_admin_email }} --url="http://localhost/" --title="{{ wp_title }}"
+  command: wp core install --path={{ server_root }} --admin_user={{ wp_admin_user }} --admin_password={{ wp_admin_pass }} --admin_email={{ wp_admin_email }} --url="http://{{ server_hostname }}/" --title="{{ wp_title }}"
   when: is_installed.stdout != "installed"

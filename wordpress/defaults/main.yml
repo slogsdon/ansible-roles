@@ -1,5 +1,5 @@
 ---
-server_hostname: .wordpress.local
+server_hostname: www.wordpress.local
 server_root: /vagrant/wordpress
 
 wp_admin_user: admin
